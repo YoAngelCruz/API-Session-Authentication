@@ -1,0 +1,55 @@
+name: develop CI/CD
+
+on:
+  push:
+    branches: [release]
+  pull_request:
+    branches: [release]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x # Reemplaza con la versión de Node.js que estás utilizando
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Create .env file
+      run: |
+        echo "TEST_DB_USER=${{ secrets.TEST_USER }}" >> .env
+        echo "TEST_DB_HOST=${{ secrets.TEST_HOST }}" >> .env
+        echo "TEST_DB_DATABASE=${{ secrets.TEST_DATABASE }}" >> .env
+        echo "TEST_DB_PASSWORD=${{ secrets.TEST_PASSWORD }}" >> .env
+        echo "TEST_DB_PORT=${{ secrets.TEST_PORT }}" >> .env
+
+    - name: Show .env file
+      run: cat .env
+    
+    - name: update MY_DEV_DATABASE
+      run: sed -i 's/MY_DEV_DATABASE/${{secrets.TEST_DATABASE}}/g' manifests/auth-configmap.yaml      
+    - name: update MY_DEV_USER
+      run: sed -i 's/MY_DEV_USER/${{secrets.TEST_USER}}/g' manifests/auth-configmap.yaml      
+    - name: update MY_DEV_PASSWORD
+      run: sed -i 's/MY_DEV_PASSWORD/${{secrets.TEST_PASSWORD}}/g' manifests/auth-configmap.yaml      
+    - name: update MY_DEV_HOST
+      run: sed -i 's/MY_DEV_HOST/${{secrets.TEST_HOST}}/g' manifests/auth-configmap.yaml      
+      
+    - name: show config
+      run: cat manifests/auth-configmap.yaml
+
+
+    - uses: okteto/context@2.7.0
+      with:
+       token: ${{ secrets.OKTETO_TOKEN }}
+    - name: Deploy
+      uses: okteto/pipeline@2.7.0
+      with:
+          name: icec-yoangelcruz # cambiar por su namespace
+          timeout: 10m
