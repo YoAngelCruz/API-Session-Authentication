@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: auth-config
+ labels:
+   app: postgres
+data:
+ DEV_SECRET_KEY: auth-crud
+ TEST_DB_DATABASE: dvtvmwto
+ TEST_DB_USER: dvtvmwto
+ TEST_DB_PASSWORD: sF-Y7OSHYuBjFE9xokOcFtTg240248nL
+ TEST_DB_HOST: flora.db.elephantsql.com
+ TEST_DB_PORT: '5432'

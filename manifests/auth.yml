@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-api
+  template:
+    metadata:
+      labels:
+        app: auth-api
+    spec:
+      containers:
+      - image: okteto.dev/auth-api:latest
+        name: icecapi
+        envFrom:
+        - configMapRef:
+            name: auth-config
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-api
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP  
+  ports:
+  - name: "auth-api"
+    port: 3000
+  selector:
+    app: auth-api
