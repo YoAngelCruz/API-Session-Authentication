@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
       - image: okteto.dev/icec-auth:latest
-        name: icecapi
+        name: icec-auth
         envFrom:
         - configMapRef:
             name: auth-config
         livenessProbe:
           httpGet:
             path: /
-            port: 3000
+            port: 3001
           initialDelaySeconds: 5
           periodSeconds: 5
 ---
