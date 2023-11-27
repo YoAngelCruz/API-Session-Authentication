@@ -51,5 +51,5 @@ jobs:
     - name: Deploy
       uses: okteto/pipeline@2.7.0
       with:
-          name: icec-yoangelcruz # cambiar por su namespace
+          name: icec-auth # cambiar por su namespace
           timeout: 10m

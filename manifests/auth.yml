@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-api
+  name: icec-auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-api
+      app: icec-auth
   template:
     metadata:
       labels:
-        app: auth-api
+        app: icec-auth
     spec:
       containers:
-      - image: okteto.dev/auth-api:latest
+      - image: okteto.dev/icec-auth:latest
         name: icecapi
         envFrom:
         - configMapRef:
@@ -29,13 +29,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-api
+  name: icec-auth
   annotations:
     dev.okteto.com/auto-ingress: "true"
 spec:
   type: ClusterIP  
   ports:
-  - name: "auth-api"
+  - name: "icec-auth"
     port: 3000
   selector:
     app: icec-auth
