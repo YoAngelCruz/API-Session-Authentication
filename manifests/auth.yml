@@ -38,4 +38,4 @@ spec:
   - name: "auth-api"
     port: 3000
   selector:
-    app: icec-yoangelcruz
+    app: icec-auth
