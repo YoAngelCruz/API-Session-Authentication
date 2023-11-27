@@ -36,6 +36,6 @@ spec:
   type: ClusterIP  
   ports:
   - name: "icec-auth"
-    port: 3000
+    port: 3001
   selector:
     app: icec-auth
